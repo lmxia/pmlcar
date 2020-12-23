@@ -10,8 +10,8 @@ from builtins import bool
 from threading import Thread
 import time
 
-from .log import get_logger
-from .memory import Memory
+from log import get_logger
+from memory import Memory
 
 
 logger = get_logger(__name__)

@@ -6,7 +6,6 @@ import glob
 
 
 class BaseCamera:
-
     def run_threaded(self):
         return self.frame
 

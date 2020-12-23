@@ -18,6 +18,7 @@ from parts.camera import PiCamera
 from parts.clock import Timestamp
 from parts.datastore import Tub, TubWriter
 from vehicle import Vehicle
+import types
 
 
 class Config:

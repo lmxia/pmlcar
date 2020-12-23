@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-from ..log import get_logger
+from log import get_logger
 
 logger = get_logger(__name__)
 
