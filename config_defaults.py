@@ -1,0 +1,29 @@
+"""
+CAR CONFIG
+
+This file is read by your car application's manage.py script to change the car
+performance.
+
+EXMAPLE
+-----------
+import dk
+cfg = dk.load_config(config_path='~/mycar/config.py')
+print(cfg.CAMERA_RESOLUTION)
+
+"""
+
+
+import os
+
+#PATHS
+CAR_PATH = PACKAGE_PATH = os.path.dirname(os.path.realpath(__file__))
+DATA_PATH = os.path.join(CAR_PATH, 'data')
+MODELS_PATH = os.path.join(CAR_PATH, 'models')
+
+#VEHICLE
+DRIVE_LOOP_HZ = 20
+MAX_LOOPS = 100000
+
+#CAMERA
+CAMERA_RESOLUTION = (120, 160) #(height, width)
+CAMERA_FRAMERATE = DRIVE_LOOP_HZ
