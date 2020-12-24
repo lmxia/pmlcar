@@ -1,22 +1,11 @@
 #!/usr/bin/env python3
-"""
-Scripts to drive a donkey 2 car and train a model for it.
-
-Usage:
-    manage.py (drive) [--model=<model>] [--js] [--chaos]
-    manage.py (train) [--tub=<tub1,tub2,..tubn>]  (--model=<model>) [--base_model=<base_model>] [--no_cache]
-
-Options:
-    -h --help        Show this screen.
-    --tub TUBPATHS   List of paths to tubs. Comma separated. Use quotes to use wildcards. ie "~/tubs/*"
-    --chaos          Add periodic random steering when manually driving
-"""
 import os
 
 from docopt import docopt
 from parts.camera import PiCamera
 from parts.clock import Timestamp
 from parts.datastore import Tub, TubWriter
+from parts.web_controller import LocalWebController
 from vehicle import Vehicle
 import types
 
@@ -82,6 +71,11 @@ def drive(config):
 
     cam = PiCamera(resolution=config.CAMERA_RESOLUTION)
     V.add(cam, outputs=['image'], threaded=True)
+
+    ctr = LocalWebController()
+    V.add(ctr,
+          inputs=['image'],
+          threaded=True)
 
     tub = TubWriter(path='~/mycar',
                     inputs=['image'],

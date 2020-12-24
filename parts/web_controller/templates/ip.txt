@@ -1,0 +1,3 @@
+using donkey version: 2.5.7 ...
+loading config file: /home/pi/mycar/config.py
+config loaded
