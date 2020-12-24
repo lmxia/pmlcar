@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+"""
+Scripts to drive a donkey 2 car and train a model for it.
+Usage:
+    manage.py (drive) [--model=<model>] [--js] [--chaos]
+    manage.py (train) [--tub=<tub1,tub2,..tubn>]  (--model=<model>) [--base_model=<base_model>] [--no_cache]
+Options:
+    -h --help        Show this screen.
+    --tub TUBPATHS   List of paths to tubs. Comma separated. Use quotes to use wildcards. ie "~/tubs/*"
+    --chaos          Add periodic random steering when manually driving
+"""
 import os
 
 from docopt import docopt

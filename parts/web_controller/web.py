@@ -15,17 +15,13 @@ from tornado.options import define, options, parse_command_line
 import random
 import tempfile
 import tarfile
-import boto3
 import threading
 import sys
 import os
 import os.path
 import time
-import sagemaker as sage
 import pyinotify
-from time import gmtime,strftime
-from sagemaker import get_execution_role
-import tornado.websocket
+from time import gmtime, strftime
 import tornado.httpserver
 import tornado
 import tornado.ioloop
@@ -35,7 +31,9 @@ import shutil
 import json
 from threading import Thread
 from tornado.ioloop import IOLoop
-import socket
+from util import img
+
+import asyncio
 
 
 class LocalWebController(tornado.web.Application):
@@ -73,10 +71,11 @@ class LocalWebController(tornado.web.Application):
 
     def update(self):
         """ Start the tornado web server. """
+        asyncio.set_event_loop(asyncio.new_event_loop())
         self.port = int(self.port)
         self.listen(self.port)
         instance = tornado.ioloop.IOLoop.instance()
-        instance.add_callback(self.say_hello)
+        #instance.add_callback(self.say_hello)
         instance.start()
 
     def run_threaded(self, img_arr=None):
@@ -123,7 +122,7 @@ class VideoAPI(tornado.web.RequestHandler):
             interval = .1
             if self.served_image_timestamp + interval < time.time():
 
-                img = util.img.arr_to_binary(self.application.img_arr)
+                img = img.arr_to_binary(self.application.img_arr)
 
                 self.write(my_boundary)
                 self.write("Content-type: image/jpeg\r\n")

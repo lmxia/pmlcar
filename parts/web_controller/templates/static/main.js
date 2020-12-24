@@ -578,33 +578,6 @@ var driveHandler = new function() {
     }
 
 
-    // var drawLine = function(angle, throttle) {
-    //
-    //   throttleConstant = 100
-    //   throttle = throttle * throttleConstant
-    //   angleSign = Math.sign(angle)
-    //   angle = toRadians(Math.abs(angle*90))
-    //
-    //   var canvas = document.getElementById("angleView"),
-    //   context = canvas.getContext('2d');
-    //   context.clearRect(0, 0, canvas.width, canvas.height);
-    //
-    //   base={'x':canvas.width/2, 'y':canvas.height}
-    //
-    //   pointX = Math.sin(angle) * throttle * angleSign
-    //   pointY = Math.cos(angle) * throttle
-    //   xPoint = {'x': pointX + base.x, 'y': base.y - pointY}
-    //
-    //   context.beginPath();
-    //   context.moveTo(base.x, base.y);
-    //   context.lineTo(xPoint.x, xPoint.y);
-    //   context.lineWidth = 5;
-    //   context.strokeStyle = '#ff0000';
-    //   context.stroke();
-    //   context.closePath();
-    //
-    // };
-
     var betaToSteering = function(beta, gamma) {
       const deadZone = 5;
       var angle = 0.0;
