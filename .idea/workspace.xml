@@ -17,7 +17,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0db0f750-4c95-4599-93b9-9a2378477142" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/web_controller/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/web_controller/templates/vehicle.html" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/templates/vehicle.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,9 +88,9 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="365" y="123" width="1240" height="857" key="DiffContextDialog/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608711718987" />
-    <state x="474" y="307" width="588" height="486" key="find.popup" timestamp="1608861414374">
+    <state x="474" y="307" width="588" height="486" key="find.popup" timestamp="1608863835189">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state x="474" y="307" width="588" height="486" key="find.popup/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608861414374" />
+    <state x="474" y="307" width="588" height="486" key="find.popup/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608863835189" />
   </component>
 </project>
