@@ -16,10 +16,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0db0f750-4c95-4599-93b9-9a2378477142" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/util/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/web_controller/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/web_controller/web.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/web.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/web_controller/templates/vehicle.html" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/templates/vehicle.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

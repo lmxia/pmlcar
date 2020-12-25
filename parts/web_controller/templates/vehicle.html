@@ -9,38 +9,12 @@
       <div class="col-md-12">
         <div class="form-inline">
           <div class="form-group">
-            <label class="group-label">
-              控制模式
-              <a data-toggle="modal" class="btn btn-primary btn-xs" data-target="#aboutControlModes">
-                <span class="glyphicon glyphicon-info-sign"></span>
-              </a>
-            </label>
             <br/>
             <div class="btn-group" data-toggle="buttons">
               <label class="btn btn-primary" id="joystick-toggle">
                 <input type="radio" name="controlMode" id="joystick" autocomplete="off" value="joystick"> 操纵杆
               </label>
               
-            </div>
-          </div>
-          <div class="form-group" style="max-width:30%;">
-            <label class="group-label">选择油门上限</label><br/>
-            <div class="form-group">
-              <select id="max_throttle_select" class="form-control">
-                <option disabled selected>选择油门上限 </option>
-                {% for t in [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 100] %}
-                  <option value="{{ t / 100.0 }}">{{ t }}%</option>
-                {% end %}
-              </select>
-            </div>
-          </div>
-          <div class="form-group" style="max-width:30%;">
-            <label class="group-label">油门模式</label><br/>
-            <div class="form-group">
-              <select id="throttle_mode_select" class="form-control">
-                <option value="user" selected>自定义</option>
-                <option value="constant">标准(最大值)</option>
-              </select>
             </div>
           </div>
         </div>
@@ -77,23 +51,6 @@
             </div>
           </div>
         </div>
-
-        <form>
-          <label>模式和驾驶员选择
-          <div class="form-group">
-            <select id="mode_select" class="form-control">
-              <option disabled selected>选择模式</option>
-              <option value="user">用户</option>
-              <option value="local">本地驾驶员</option>
-              <option value="local_angle">本地角度</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <button type="button" id="record_button" class="btn btn-info btn-block">
-              开始记录
-            </button>
-          </div>
-        </form>
       </div>
 
       <div class="col-xs-8 col-sm-5 col-md-5"><!-- center column -->
