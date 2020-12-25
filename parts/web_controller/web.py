@@ -31,7 +31,7 @@ import shutil
 import json
 from threading import Thread
 from tornado.ioloop import IOLoop
-from util import img
+import util
 
 import asyncio
 
@@ -122,7 +122,7 @@ class VideoAPI(tornado.web.RequestHandler):
             interval = .1
             if self.served_image_timestamp + interval < time.time():
 
-                img = img.arr_to_binary(self.application.img_arr)
+                img = util.img.arr_to_binary(self.application.img_arr)
 
                 self.write(my_boundary)
                 self.write("Content-type: image/jpeg\r\n")
