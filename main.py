@@ -16,6 +16,7 @@ from parts.camera import PiCamera
 from parts.clock import Timestamp
 from parts.datastore import Tub, TubWriter
 from parts.web_controller import LocalWebController
+from parts.usbserial import CarEngine
 from vehicle import Vehicle
 import types
 
@@ -85,7 +86,11 @@ def drive(config):
     ctr = LocalWebController()
     V.add(ctr,
           inputs=['image'],
+          outputs=['angle', 'throttle'],
           threaded=True)
+
+    engine = CarEngine()
+    V.add(engine, inputs=['angle', 'throttle'])
 
     tub = TubWriter(path='~/mycar',
                     inputs=['image'],

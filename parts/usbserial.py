@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import serial
+import numpy as np
 
 
 def _uchar_checksum(data):
@@ -29,7 +30,14 @@ class CarEngine:
     def __init__(self, dev='/dev/ttyUSB0'):
         self.port = serial.Serial(dev, 115200, timeout=1)
 
-    def move(self, left_forward, right_forward, left_back, right_back):
+    def run(self, angle, throttle):
+        # map absolute angle to angle that vehicle can implement.
+        raw_pulse = np.ones(4)
+        filter = np.array([[1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1]])
+        filter_pulse = np.dot(raw_pulse, filter * 0.25) * angle * throttle
+        self._move(filter_pulse[0], filter_pulse[1], filter_pulse[2], filter_pulse[3])
+
+    def _move(self, left_forward, right_forward, left_back, right_back):
         left_forward_pulse = self._map_range(left_forward)
         first_left_forward, second_left_forward = _get_2_hex(left_forward_pulse)
 
@@ -65,6 +73,7 @@ class CarEngine:
 
 
 if __name__ == '__main__':
-    engine = CarEngine(dev='/dev/cu.usbserial-14140')
-    engine.move(0.1, -0.1, 0.1, -0.1)
+    engine = CarEngine(dev='/dev/cu.usbserial-14210')
+    engine._move(0.2, -0.2, 0.2, -0.2)
+    # engine.move(0.1, 0, 0, 0)
     engine.shutdown()

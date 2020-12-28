@@ -80,7 +80,7 @@ class LocalWebController(tornado.web.Application):
 
     def run_threaded(self, img_arr=None):
         self.img_arr = img_arr
-
+        return self.angle, self.throttle
 
     def shutdown(self):
         pass
