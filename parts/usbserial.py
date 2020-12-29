@@ -2,6 +2,7 @@
 
 import serial
 import numpy as np
+import math
 
 
 def _uchar_checksum(data):
@@ -32,12 +33,14 @@ class CarEngine:
 
     def run(self, angle, throttle):
         # map absolute angle to angle that vehicle can implement.
-        raw_pulse = np.ones(4)
-        filter = np.array([[1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1]])
-        filter_pulse = np.dot(raw_pulse, filter * 0.25) * angle * throttle
-        if abs(angle) > 1e-4 or abs(throttle) > 1e-4:
-            print(filter_pulse, angle, throttle)
-        self._move(filter_pulse[0], filter_pulse[1], filter_pulse[2], filter_pulse[3])
+        if abs(angle) < 1e-4 and abs(throttle) < 1e-4:
+            return
+        else:
+            raw_pulse = np.ones(4)
+            filter = np.array([[1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1]])
+            filter_pulse = np.dot(raw_pulse, filter * 0.25) * math.exp(angle-1) * math.exp(throtlle-1)
+            print("angle and throttle is", angle, throttle, "input pulse is", filter_pulse)
+            self._move(filter_pulse[0], filter_pulse[1], filter_pulse[2], filter_pulse[3])
 
     def _move(self, left_forward, right_forward, left_back, right_back):
         left_forward_pulse = self._map_range(left_forward)
