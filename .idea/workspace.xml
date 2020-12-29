@@ -10,16 +10,15 @@
     <select>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:main" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0db0f750-4c95-4599-93b9-9a2378477142" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/usbserial.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/usbserial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/web_controller/web.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/web_controller/web.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +104,17 @@
                   <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
             </State>
           </value>
         </entry>
@@ -121,22 +131,42 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="365" y="123" width="1240" height="857" key="DiffContextDialog/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608711718987" />
-    <state width="1419" height="231" key="GridCell.Tab.0.bottom" timestamp="1608884408711">
+    <state width="1419" height="279" key="GridCell.Tab.0.bottom" timestamp="1609207291036">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1419" height="231" key="GridCell.Tab.0.bottom/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608884408711" />
-    <state width="1419" height="231" key="GridCell.Tab.0.center" timestamp="1608884408709">
+    <state width="1419" height="279" key="GridCell.Tab.0.bottom/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207291036" />
+    <state width="1419" height="279" key="GridCell.Tab.0.center" timestamp="1609207291035">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1419" height="231" key="GridCell.Tab.0.center/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608884408709" />
-    <state width="1419" height="231" key="GridCell.Tab.0.left" timestamp="1608884408707">
+    <state width="1419" height="279" key="GridCell.Tab.0.center/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207291035" />
+    <state width="1419" height="279" key="GridCell.Tab.0.left" timestamp="1609207291034">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1419" height="231" key="GridCell.Tab.0.left/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608884408707" />
-    <state width="1419" height="231" key="GridCell.Tab.0.right" timestamp="1608884408710">
+    <state width="1419" height="279" key="GridCell.Tab.0.left/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207291034" />
+    <state width="1419" height="279" key="GridCell.Tab.0.right" timestamp="1609207291035">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1419" height="231" key="GridCell.Tab.0.right/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608884408710" />
+    <state width="1419" height="279" key="GridCell.Tab.0.right/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207291035" />
+    <state width="1419" height="286" key="GridCell.Tab.1.bottom" timestamp="1609207233561">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1419" height="286" key="GridCell.Tab.1.bottom/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207233561" />
+    <state width="1419" height="286" key="GridCell.Tab.1.center" timestamp="1609207233561">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1419" height="286" key="GridCell.Tab.1.center/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207233561" />
+    <state width="1419" height="286" key="GridCell.Tab.1.left" timestamp="1609207233560">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1419" height="286" key="GridCell.Tab.1.left/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207233560" />
+    <state width="1419" height="286" key="GridCell.Tab.1.right" timestamp="1609207233561">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state width="1419" height="286" key="GridCell.Tab.1.right/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207233561" />
+    <state x="513" y="171" key="RollbackChangesDialog" timestamp="1609207315048">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="513" y="171" key="RollbackChangesDialog/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609207315048" />
     <state x="-1692" y="93" width="970" height="688" key="find.popup" timestamp="1608883083412">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>

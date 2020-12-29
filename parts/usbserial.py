@@ -15,7 +15,7 @@ def _uchar_checksum(data):
 
 
 def _get_2_hex(dec):
-    if dec > 0:
+    if dec >= 0:
         return 0X00, dec % 0xFF
     else:
         return 0XFF, dec % 256
@@ -35,6 +35,8 @@ class CarEngine:
         raw_pulse = np.ones(4)
         filter = np.array([[1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1], [1, -1, 1, -1]])
         filter_pulse = np.dot(raw_pulse, filter * 0.25) * angle * throttle
+        if abs(angle) > 1e-4 or abs(throttle) > 1e-4:
+            print(filter_pulse, angle, throttle)
         self._move(filter_pulse[0], filter_pulse[1], filter_pulse[2], filter_pulse[3])
 
     def _move(self, left_forward, right_forward, left_back, right_back):
