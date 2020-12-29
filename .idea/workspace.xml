@@ -17,9 +17,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0db0f750-4c95-4599-93b9-9a2378477142" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements..txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,5 +171,9 @@
     </state>
     <state x="-1692" y="93" width="970" height="688" key="find.popup/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@-1920.23.1920.1057" timestamp="1608883083412" />
     <state x="474" y="307" width="588" height="486" key="find.popup/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1608863891312" />
+    <state x="385" y="243" width="670" height="676" key="search.everywhere.popup" timestamp="1609236012161">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="385" y="243" width="670" height="676" key="search.everywhere.popup/0.1103.1440.877/0.23.1920.1057/-1920.23.1920.1057@0.23.1920.1057" timestamp="1609236012161" />
   </component>
 </project>
