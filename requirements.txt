@@ -1,2 +1,7 @@
 docopt
 pandas
+Pillow
+tornado==5.1.1
+pyinotify
+pyserial
+picamera
