@@ -116,19 +116,26 @@ class Vehicle:
         loop over all parts
         """
         for entry in self.parts:
-            p = entry['part']
-            # get inputs from memory
-            inputs = self.mem.get(entry['inputs'])
+            run = True
+            if entry.get('run_condition'):
+                # don't run if there is a run condition that is False
+                run_condition = entry.get('run_condition')
+                run = self.mem.get([run_condition])[0]
 
-            # run the part
-            if entry.get('thread'):
-                outputs = p.run_threaded(*inputs)
-            else:
-                outputs = p.run(*inputs)
+            if run:
+                p = entry['part']
+                #get inputs from memory
+                inputs = self.mem.get(entry['inputs'])
 
-            # save the output to memory
-            if outputs is not None:
-                self.mem.put(entry['outputs'], outputs)
+                #run the part
+                if entry.get('thread'):
+                    outputs = p.run_threaded(*inputs)
+                else:
+                    outputs = p.run(*inputs)
+
+                #save the output to memory
+                if outputs is not None:
+                    self.mem.put(entry['outputs'], outputs)
 
     def stop(self):
         logger.info('Shutting down vehicle and its parts...')

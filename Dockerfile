@@ -1,5 +1,5 @@
 FROM arm32v7/python:3.6
-COPY . /app
+COPY parts /app
 WORKDIR /app
 ENV READTHEDOCS=True
 RUN pip install -r requirements.txt

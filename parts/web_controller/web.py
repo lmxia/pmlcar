@@ -20,7 +20,7 @@ import sys
 import os
 import os.path
 import time
-import pyinotify
+#import pyinotify
 from time import gmtime, strftime
 import tornado.httpserver
 import tornado
@@ -31,7 +31,7 @@ import shutil
 import json
 from threading import Thread
 from tornado.ioloop import IOLoop
-import util
+import utils
 
 import asyncio
 
@@ -80,7 +80,7 @@ class LocalWebController(tornado.web.Application):
 
     def run_threaded(self, img_arr=None):
         self.img_arr = img_arr
-        return self.angle, self.throttle
+        return self.angle, self.throttle,self.mode,self.recording
 
     def shutdown(self):
         pass
@@ -104,31 +104,37 @@ class DriveAPI(tornado.web.RequestHandler):
 
 
 class VideoAPI(tornado.web.RequestHandler):
-    """
+    '''
     Serves a MJPEG of the images posted from the vehicle.
-    """
+    '''
 
-    @tornado.web.asynchronous
-    @tornado.gen.coroutine
-    def get(self):
+    async def get(self):
 
-        ioloop = tornado.ioloop.IOLoop.current()
-        self.set_header("Content-type", "multipart/x-mixed-replace;boundary=--boundarydonotcross")
+        self.set_header("Content-type",
+                        "multipart/x-mixed-replace;boundary=--boundarydonotcross")
 
-        self.served_image_timestamp = time.time()
-        my_boundary = "--boundarydonotcross"
+        served_image_timestamp = time.time()
+        my_boundary = "--boundarydonotcross\n"
         while True:
 
-            interval = .1
-            if self.served_image_timestamp + interval < time.time():
+            interval = .01
+            if served_image_timestamp + interval < time.time() and \
+                    hasattr(self.application, 'img_arr'):
 
-                img = util.img.arr_to_binary(self.application.img_arr)
-
+                img = utils.arr_to_binary(self.application.img_arr)
                 self.write(my_boundary)
                 self.write("Content-type: image/jpeg\r\n")
                 self.write("Content-length: %s\r\n\r\n" % len(img))
                 self.write(img)
-                self.served_image_timestamp = time.time()
-                yield tornado.gen.Task(self.flush)
+                served_image_timestamp = time.time()
+                try:
+                    await self.flush()
+                except tornado.iostream.StreamClosedError:
+                    pass
             else:
-                yield tornado.gen.Task(ioloop.add_timeout, ioloop.time() + interval)
+                await tornado.gen.sleep(interval)
+
+
+if __name__ == '__main__':
+    ctr = LocalWebController()
+    ctr.update()

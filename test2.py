@@ -16,25 +16,31 @@ from docopt import docopt
 
 from config import load_config
 from parts.camera import PiCamera
+import tensorflow as tf
 from parts.clock import Timestamp
-from parts.datastore import TubHandler,TubGroup
+from parts.datastore import Tub, TubWriter,TubHandler,TubGroup
+from parts.dgym import DonkeyGymEnv
+from parts.web_controller import LocalWebController
+from parts.usbserial import CarEngine
 from parts.keras import KerasLinear
+from vehicle import Vehicle
 from parts.transform import Lambda
+import numpy as np
+import types
 
 
-
-def drive(config,model_path,tub_path):
-
-    from parts.usbserial import CarEngine
-    from vehicle import Vehicle
-    from parts.web_controller import LocalWebController
-
+def drive(config,model_path=None,tub_path=None):
     V = Vehicle()
     clock = Timestamp()
     V.add(clock, outputs=['timestamp'])
+    sim_path = "/Users/wumengying/projects/DonkeySimMac/donkey_sim.app/Contents/MacOS/donkey_sim"
+    conf = {"exe_path": sim_path, "port": 9091}
 
-    cam = PiCamera(resolution=config.CAMERA_RESOLUTION)
-    V.add(cam, outputs=['cam/image_array'], threaded=True)
+    cam = DonkeyGymEnv(sim_path,  conf=conf)
+    threaded = True
+    inputs = ['angle', 'throttle']
+
+    V.add(cam, inputs=inputs, outputs=['cam/image_array'], threaded=threaded)
 
     ctr = LocalWebController()
     V.add(ctr,
@@ -55,15 +61,12 @@ def drive(config,model_path,tub_path):
 
     #Run the pilot if the mode is not user
     kl = KerasLinear()
-    if not model_path:
-        model_path = cfg.MODELS_PATH
-        model_path = os.path.expanduser(model_path)
-    kl.load(model_path)
-
+    if model_path:
+        kl.load(model_path)
 
     V.add(kl,inputs=['cam/image_array'],
           outputs =['pilot/angle','pilot/throttle'],
-          run_condition='run_pilot')
+          run_condition ='run_pilot')
 
     #Choose what inputs should change the car
     def drive_mode(mode,
@@ -81,8 +84,6 @@ def drive(config,model_path,tub_path):
           outputs=['angle','throttle'])
 
 
-    engine = CarEngine()
-    V.add(engine, inputs=['angle', 'throttle'])
 
     # add tub to save data
     inputs = ['cam/image_array', 'user/angle', 'user/throttle', 'user/mode']
@@ -103,11 +104,6 @@ def drive(config,model_path,tub_path):
 
 
 def train(cfg,model_path,tub_path):
-    import tensorflow as tf
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    for gpu in gpus:
-        tf.config.experimental.set_memory_growth(gpu, True)
-
     '''
     use the specified data in tub_names to train an artifical neural network
     saves the output trained model as model_name
@@ -119,9 +115,8 @@ def train(cfg,model_path,tub_path):
 
     if not tub_path:
         tub_path = cfg.DATA_PATH
-    if not model_path:
-        model_path = cfg.MODELS_PATH
     tub_path = os.path.expanduser(tub_path)
+    print('tub_path',tub_path)
 
     tubgroup = TubGroup(tub_path)
     train_gen,val_gen = tubgroup.get_train_val_gen(X_keys,Y_keys,batch_size=cfg.BATCH_SIZE,
@@ -142,7 +137,7 @@ if __name__ == '__main__':
     if args['drive']:
         tub = args['--tub']
         model = args['--model']
-        drive(cfg,model_path=model,tub_path =tub)
+        drive(cfg,model_path=model,tub_path=tub)
     elif args['train']:
         tub = args['--tub']
         model = args['--model']

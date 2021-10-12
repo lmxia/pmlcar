@@ -46,6 +46,7 @@ def get_logger(name):
     Return a logger that will contextualize the logs with the name.
     """
     logger = logging.getLogger(name)
+    setup()
     return logger
 
 
