@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-leader
+  labels:
+    app: redis
+    role: leader
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: leader
+        tier: backend
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master
+      containers:
+      - name: leader
+        image: "redis:6.0.16"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-leader
+  labels:
+    app: redis
+    role: leader
+    tier: backend
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+    role: leader
+    tier: backend
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    component: celery
+    app: taskQueue
+  name: celery-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskQueue
+      component: celery
+  template:
+    metadata:
+      labels:
+        app: taskQueue
+        component: celery
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master
+      containers:
+      - name: celery-worker
+        image: lcw2/pmlcartrain:v4
+        command: ['celery', '-A','main.celery','worker', '-l', 'info']
+        ports:
+        - containerPort: 5672
+        env:
+        - name: BROKER_URL
+          value: redis://redis-leader:6379
+        - name: RESULT_BACKEND_URL
+          value: redis://redis-leader:6379/0
+        volumeMounts:
+        - mountPath: /root/mycar
+          name: modelvolume
+      volumes:
+      - name: modelvolume
+        hostPath:
+          path: /root/mycar
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartrain-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pmlcartrain
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pmlcartrain
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master
+      containers:
+      - name: pmlcartrain
+        image: lcw2/pmlcartrain:v4
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BROKER_URL
+          value: redis://redis-leader:6379
+        - name: RESULT_BACKEND_URL
+          value: redis://redis-leader:6379/0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pmlcartrain-service
+  labels:
+    app: pmlcartrain-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: pmlcartrain

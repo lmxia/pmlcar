@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pmlcar-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pmlcar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pmlcar
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: pmlcar
+      containers:
+      - name: pmlcar
+        image: lcw2/pmlcar:v1.1
+        ports:
+          - containerPort: 8887
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /opt/vc
+          name: carvolume
+        - mountPath: /root/mycar
+          name: modelvolume
+      hostNetwork: true
+      volumes:
+      - name: carvolume
+        hostPath:
+          path: /opt/vc
+      - name: modelvolume
+        hostPath:
+          path: /home/pi/mycar
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pmlcaredge-service
+  labels:
+    app: pmlcaredge-service
+spec:
+  ports:
+  - port: 8887
+    targetPort: 8887
+  selector:
+    app: pmlcar

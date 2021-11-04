@@ -1,0 +1,6 @@
+celery
+flask
+pandas
+numpy
+Pillow
+redis
