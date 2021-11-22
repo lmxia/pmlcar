@@ -17,6 +17,7 @@ import glob
 import numpy as np
 import pandas as pd
 from PIL import Image
+from minio import Minio
 
 from log import get_logger
 
@@ -93,7 +94,7 @@ class Tub(object):
         def get_file_ix(file_name):
             try:
                 name = file_name.split('.')[0]
-                num = int(name.split('_')[1])
+                num = int(name.split('-')[1])
             except:
                 num = 0
             return num
@@ -201,6 +202,7 @@ class Tub(object):
                 img.save(os.path.join(self.path, name))
                 json_data[key] = name
 
+
             else:
                 msg = 'Tub does not know what to do with this type {}'.format(typ)
                 raise TypeError(msg)
@@ -212,6 +214,7 @@ class Tub(object):
         # fill zeros
         # return os.path.join(self.path, 'record_'+str(ix).zfill(6)+'.json')
         # don't fill zeros
+        return os.path.join(self.path, 'record_' + str(ix) + '.json')
         return os.path.join(self.path, 'record_' + str(ix) + '.json')
 
     def get_json_record(self, ix):
@@ -435,7 +438,7 @@ class TubHandler():
     def next_tub_number(self, path):
         def get_tub_num(tub_name):
             try:
-                num = int(tub_name.split('_')[1])
+                num = int(tub_name.split('-')[1])
             except:
                 num = 0
             return num
@@ -449,7 +452,7 @@ class TubHandler():
     def create_tub_path(self):
         tub_num = self.next_tub_number(self.path)
         date = datetime.datetime.now().strftime('%y-%m-%d')
-        name = '_'.join(['tub', str(tub_num), date])
+        name = '-'.join(['tub', str(tub_num), date])
         tub_path = os.path.join(self.path, name)
         return tub_path
 

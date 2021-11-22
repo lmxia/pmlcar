@@ -126,6 +126,9 @@ var driveHandler = new function() {
       $('#tar_button').click(function() {
         tarData();
       });
+      $('#state_button').click(function () {
+          showState();
+      })
       $('input[type=radio][name=controlMode]').change(function() {
         if (this.value == 'joystick') {
           state.controlMode = "joystick";
@@ -224,24 +227,24 @@ var driveHandler = new function() {
 
       if (state.recording) {
         $('#record_button')
-          .html('Stop Recording (r)')
+          .html('停止记录训练数据')
           .removeClass('btn-info')
           .addClass('btn-warning').end()
       } else {
         $('#record_button')
-          .html('Start Recording (r)')
+          .html('开始记录训练数据')
           .removeClass('btn-warning')
           .addClass('btn-info').end()
       }
 
       if (state.brakeOn) {
         $('#brake_button')
-          .html('Start Vehicle')
+          .html('小车运行')
           .removeClass('btn-danger')
           .addClass('btn-success').end()
       } else {
         $('#brake_button')
-          .html('Stop Vehicle')
+          .html('停止运行')
           .removeClass('btn-success')
           .addClass('btn-danger').end()
       }
@@ -307,15 +310,17 @@ var driveHandler = new function() {
     }
 
     var postTrain = function () {
-         $.get('train',function(data,status){
-            if(status == "success"){}
+         $.post('train',{},function(data,status){
+            if(status == "success"){
+                alert("状态："+status+"\n"+ "data: "+data)
+            }
             })
     }
     
     var check_finish=function() {
-      $.get('finish',function(data) {
+      $.post('status',function(data) {
           console.log("data is %s",data)
-          if(data['result'] == true){
+          if(data['state'] == 'SUCCESS'){
             finish_training = true
           }
       })
@@ -326,19 +331,18 @@ var driveHandler = new function() {
              if( finish_training == true) {
                 clearInterval(this.timeId)
                 $('#train_button').removeAttr("disabled")
-             };check_finish();},3000)
+             };check_finish();},30000)
     }
     
     
     var postUpload = function () {
-        $.get('tar_upload',function(data,status){
+        $.post('upload',function(data,status){
             if(status == "success"){alert("上传成功！");}
             })
-    
     }
 
     var postDownload= function () {
-        $.get('download',function(data,status){
+        $.post('download',function(data,status){
             if(status == "success"){alert("下载成功！");}
             })
     }
@@ -356,8 +360,8 @@ var driveHandler = new function() {
         var r=confirm("确认开始训练?");
 	if (r==true){
 	    postTrain()
-            $('#train_button').attr("disabled", "disabled");
-            loop_check()
+        $('#train_button').attr("disabled", "disabled");
+	    loop_check()
 	}
 	else{}
         
@@ -385,6 +389,13 @@ var driveHandler = new function() {
 		$("#newdiv").load("/home/pi/output.txt");
             });
         });
+    }
+
+    var showState = function () {
+        $.post('status',{},function (data) {
+            state = JSON.parse(data)
+            alert("状态："+state['state']+"\n"+"epochs:"+state['epoch']+"\n"+"loss:"+state['loss']+"\n")
+        })
     }
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 from config import load_config
-from parts.datastore import TubHandler, TubGroup
+from parts.datastore import TubGroup
 from parts.keras import KerasLinear
 import tensorflow as tf
 from flask import Flask, request

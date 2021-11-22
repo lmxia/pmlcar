@@ -435,7 +435,7 @@ class TubHandler():
     def next_tub_number(self, path):
         def get_tub_num(tub_name):
             try:
-                num = int(tub_name.split('_')[1])
+                num = int(tub_name.split('-')[1])
             except:
                 num = 0
             return num
@@ -449,7 +449,7 @@ class TubHandler():
     def create_tub_path(self):
         tub_num = self.next_tub_number(self.path)
         date = datetime.datetime.now().strftime('%y-%m-%d')
-        name = '_'.join(['tub', str(tub_num), date])
+        name = '-'.join(['tub', str(tub_num), date])
         tub_path = os.path.join(self.path, name)
         return tub_path
 

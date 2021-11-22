@@ -25,7 +25,9 @@ RUN pip3 install docopt  && \
     pip3 install pyserial && \
     pip3 install picamera && \
     pip3 install Pillow && \
-    pip3 install pandas
+    pip3 install pandas && \
+    pip3 install requests && \
+    pip3 install minio
 
 RUN rm -r ~/.cache/pip
 COPY . /app

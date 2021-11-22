@@ -12,29 +12,41 @@ The client and web server needed to control a car remotely.
 import os
 import os.path
 import time
-#import pyinotify
+import json
+from config import load_config
+
 import tornado.httpserver
 import tornado
 import tornado.ioloop
 import tornado.web
 import tornado.gen
 import utils
-
+import requests
+from parts.miniostore import UpAndDownload
 import asyncio
 
 
 class LocalWebController(tornado.web.Application):
     port = 8887
 
-    def __init__(self):
+    def __init__(self,kl=None):
         """
         Create and publish variables needed on many of
         the web handlers.
         """
         print('Starting Car Server...')
-        
+        cfg = load_config()
+
         this_dir = os.path.dirname(os.path.realpath(__file__))
         self.static_file_path = os.path.join(this_dir, 'templates', 'static')
+        self.cloud_ip = "http://" + cfg.CLOUD_IP + ":30007"
+        self.data_path = cfg.DATA_PATH
+        self.task_id = None
+        self.minio_endpoint = cfg.CLOUD_IP +":9000"
+        self.access_key = cfg.ACCESS_KEY
+        self.secret_key = cfg.SECRET_KEY
+        self.minio_client = UpAndDownload(self.data_path,self.minio_endpoint,self.access_key,self.secret_key)
+        self.kl = kl
 
         self.angle = 0.0
         self.throttle = 0.0
@@ -50,7 +62,11 @@ class LocalWebController(tornado.web.Application):
             (r"/", tornado.web.RedirectHandler, dict(url="/drive")),
             (r"/drive", DriveAPI),
             (r"/video", VideoAPI),
+            (r"/train", TrainAPI),
             (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": self.static_file_path}),
+            (r"/upload", UpDataAPI),
+            (r"/status", StatusAPI),
+            (r"/download",DownloadAPI),
         ]
 
         settings = {'debug': True}
@@ -62,15 +78,32 @@ class LocalWebController(tornado.web.Application):
         self.port = int(self.port)
         self.listen(self.port)
         instance = tornado.ioloop.IOLoop.instance()
-        #instance.add_callback(self.say_hello)
+        # instance.add_callback(self.say_hello)
         instance.start()
 
     def run_threaded(self, img_arr=None):
         self.img_arr = img_arr
-        return self.angle, self.throttle,self.mode,self.recording
+        return self.angle, self.throttle, self.mode, self.recording
 
     def shutdown(self):
         pass
+
+
+class UpDataAPI(tornado.web.RequestHandler):
+    def post(self):
+        up = self.application.minio_client
+        up.upload_data()
+
+class DownloadAPI(tornado.web.RequestHandler):
+    def post(self):
+        download = self.application.minio_client
+        download.download_data("model","keras_metadata.pb")
+        download.download_data("model","saved_model.pb")
+        download.download_data("model","variables/variables.data-00000-of-00001")
+        download.download_data("model","variables/variables.index")
+        self.application.kl.load(os.path.join(os.path.expanduser(self.application.data_path),"model"))
+
+
 
 
 class DriveAPI(tornado.web.RequestHandler):
@@ -88,6 +121,48 @@ class DriveAPI(tornado.web.RequestHandler):
         self.application.throttle = data['throttle']
         self.application.mode = data['drive_mode']
         self.application.recording = data['recording']
+
+
+class TrainAPI(tornado.web.RequestHandler):
+    def post(self):
+        # data_path = self.get_body_argument("data_path")
+        data_path = self.application.data_path
+        if self.application.task_id is not None:
+            return self.write("task is running.")
+        if data_path is not None:
+            url = os.path.join(self.application.cloud_ip, "train")
+            data = {
+                "data_path": data_path
+            }
+            response = requests.post(url=url, data=data)
+            response_data = json.loads(response.content.decode())
+            self.application.task_id = response_data['task_id']
+            return self.write(response.content)
+
+
+class StatusAPI(tornado.web.RequestHandler):
+    def post(self):
+        task_id = self.application.task_id
+        if task_id is not None:
+            url = os.path.join(self.application.cloud_ip, "status")
+            data = {
+                "task_id": task_id
+            }
+            response = requests.post(url=url, data=data)
+            response_data = json.loads(response.content.decode())
+            state = response_data['state']
+            if state == "SUCCESS":
+                self.application.task_id = None
+            if state == "FAILED":
+                self.application.task_id = None
+            return self.write(response.content)
+        else:
+            data = {
+                "state":"not running a task",
+                "epoch": "null",
+                "loss": "null"
+            }
+            return self.write(data)
 
 
 class VideoAPI(tornado.web.RequestHandler):

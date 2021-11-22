@@ -16,7 +16,7 @@ spec:
         kubernetes.io/hostname: pmlcar
       containers:
       - name: pmlcar
-        image: lcw2/pmlcar:v1.1
+        image: lcw2/pmlcar:v1.2
         ports:
           - containerPort: 8887
         securityContext:
