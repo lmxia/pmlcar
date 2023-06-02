@@ -73,6 +73,8 @@ def drive(config):
 
     tub_path = cfg.DATA_PATH
     tub_path = os.path.expanduser(tub_path)
+    if not os.path.exists(tub_path):
+        os.mkdir(tub_path)
 
     th = TubHandler(path=tub_path)
     tub = th.new_tub_writer(inputs=inputs, types=types)
