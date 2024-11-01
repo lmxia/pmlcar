@@ -23,7 +23,6 @@ RUN ln -s /opt/vc/lib/libbcm_host.so /usr/lib/libbcm_host.so && \
     ln -s /opt/vc/lib/libvcsm.so.0 /usr/lib/libvcsm.so.0 && \
     ln -s /opt/vc/lib/libmmal_core.so.0 /usr/lib/libmmal_core.so.0 && \
     ln -s /opt/vc/lib/libmmal_util.so.0 /usr/lib/libmmal_util.so.0 && \
-    ln -s /opt/vc/lib/libvchiq_arm.so /usr/lib/opt/vc/lib/libvchiq_arm.so && \
     ln -s /opt/vc/lib/libopenmaxil.so /usr/lib/libopenmaxil.so && \
 	ln -s /opt/vc/lib/libvcos.so /usr/lib/libvcos.so &&  \
 	ln -s /opt/vc/lib/libvchiq_arm.so /usr/lib/libvchiq_arm.so && \

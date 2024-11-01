@@ -2,7 +2,7 @@
 
 import os
 from config import load_config
-from parts.camera import PiCamera
+#from parts.camera import PiCamera
 from parts.clock import Timestamp
 from parts.datastore import TubHandler
 from parts.keras import KerasLinear
@@ -17,8 +17,8 @@ def drive(config):
     clock = Timestamp()
     V.add(clock, outputs=['timestamp'])
 
-    cam = PiCamera(resolution=config.CAMERA_RESOLUTION)
-    V.add(cam, outputs=['cam/image_array'], threaded=True)
+    # cam = PiCamera(resolution=config.CAMERA_RESOLUTION)
+    # V.add(cam, outputs=['cam/image_array'], threaded=True)
 
     # See if we should even run the pilot module
     # This is only needed because the part run condition only accepts boolean
@@ -32,16 +32,16 @@ def drive(config):
     V.add(pilot_condition_part, inputs=['user/mode'], outputs=['run_pilot'])
 
     # Run the pilot if the mode is not user
-    kl = KerasLinear()
-    model_path = config.MODELS_PATH
-    model_path = os.path.expanduser(model_path)
-    if os.path.exists(model_path):
-        kl.load(model_path)
-
-    V.add(kl, inputs=['cam/image_array'],
-          outputs=['pilot/angle', 'pilot/throttle'],
-          run_condition='run_pilot')
-
+    # kl = KerasLinear()
+    # model_path = config.MODELS_PATH
+    # model_path = os.path.expanduser(model_path)
+    # if os.path.exists(model_path):
+    #     kl.load(model_path)
+    #
+    # V.add(kl, inputs=['cam/image_array'],
+    #       outputs=['pilot/angle', 'pilot/throttle'],
+    #       run_condition='run_pilot')
+    kl = None
     ctr = LocalWebController(kl)
     V.add(ctr,
           inputs=['cam/image_array'],
@@ -76,10 +76,10 @@ def drive(config):
     if not os.path.exists(tub_path):
         os.mkdir(tub_path)
 
-    th = TubHandler(path=tub_path)
-    tub = th.new_tub_writer(inputs=inputs, types=types)
-
-    V.add(tub, inputs=inputs, run_condition='recording')
+    # th = TubHandler(path=tub_path)
+    # tub = th.new_tub_writer(inputs=inputs, types=types)
+    #
+    # V.add(tub, inputs=inputs, run_condition='recording')
 
     # run the vehicle
     V.start(rate_hz=config.DRIVE_LOOP_HZ,
